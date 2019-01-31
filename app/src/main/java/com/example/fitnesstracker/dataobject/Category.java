@@ -4,21 +4,28 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Category {
 
     @PrimaryKey(autoGenerate = true)
-    private int uid;
+    private int id;
 
     @ColumnInfo
     private String name;
 
-    public int getUid() {
-        return uid;
+    public Category(String name) {
+        this.name = name;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

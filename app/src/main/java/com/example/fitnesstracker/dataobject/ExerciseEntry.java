@@ -11,8 +11,8 @@ public class ExerciseEntry {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @Embedded
-    private Exercise exercise;
+//    @Embedded
+//    private Exercise exercise;
 
     @ColumnInfo
     private int repetition;
@@ -28,13 +28,13 @@ public class ExerciseEntry {
         this.id = id;
     }
 
-    public Exercise getExercise() {
-        return exercise;
-    }
-
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
-    }
+//    public Exercise getExercise() {
+//        return exercise;
+//    }
+//
+//    public void setExercise(Exercise exercise) {
+//        this.exercise = exercise;
+//    }
 
     public int getRepetition() {
         return repetition;

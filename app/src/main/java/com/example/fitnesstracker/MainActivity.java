@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.example.fitnesstracker.dao.AppDatabase;
 import com.example.fitnesstracker.dataobject.Category;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     EditText categoryEditText;
@@ -42,7 +44,20 @@ public class MainActivity extends AppCompatActivity {
                 myAppDatabase.exerciseDao().insertCategories(category);
 
                 Toast.makeText(getApplicationContext(),"Category successfully added", Toast.LENGTH_LONG).show();
+                showCategories();
             }
         });
+        showCategories();
+    }
+
+    public void showCategories() {
+        String categories = "";
+
+        List<Category> categoryList = myAppDatabase.exerciseDao().loadAllCategories();
+        for(Category category : categoryList) {
+            categories += category.getName() + "\n";
+        }
+
+        displayView.setText(categories);
     }
 }
