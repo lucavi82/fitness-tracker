@@ -5,7 +5,6 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.example.fitnesstracker.dataobject.Category;
 import com.example.fitnesstracker.dataobject.Exercise;
@@ -21,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
     public abstract ExerciseDao exerciseDao();
 
-    synchronized static AppDatabase getDatabase(Context context) {
+    public synchronized static AppDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE = buildDatabase(context);
         }
@@ -48,7 +47,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class,
                                     "exercise_database")
-                                    .addCallback(dbCallback).build();
+                                    .addCallback(dbCallback).allowMainThreadQueries().build();
                 }
             }
         }

@@ -11,14 +11,17 @@ import android.widget.Toast;
 
 import com.example.fitnesstracker.dao.AppDatabase;
 import com.example.fitnesstracker.dataobject.Category;
+import com.example.fitnesstracker.dataobject.Exercise;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText categoryEditText;
     Button saveCategoryBtn;
-    TextView displayView;
+    TextView categoryTextView;
+    TextView exerciseTextView;
 
     public static AppDatabase myAppDatabase;
 
@@ -27,10 +30,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        myAppDatabase = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, "Exercise").allowMainThreadQueries().build();
+//        myAppDatabase = Room.databaseBuilder(getApplicationContext(),AppDatabase.class, "Exercise").allowMainThreadQueries().build();
+
+        myAppDatabase = AppDatabase.getDatabase(getApplicationContext());
 
         saveCategoryBtn = findViewById(R.id.save_category_btn);
-        displayView = findViewById(R.id.category_text_view);
+        categoryTextView = findViewById(R.id.category_text_view);
+        exerciseTextView = findViewById(R.id.exercise_text_view);
         categoryEditText = findViewById(R.id.category_edit_text);
 
         saveCategoryBtn.setOnClickListener(new View.OnClickListener() {
@@ -38,26 +44,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String categoryName = categoryEditText.getText().toString();
-                Category category = new Category();
+                Category category = new Category(categoryName);
                 category.setName(categoryName);
 
-                myAppDatabase.exerciseDao().insertCategories(category);
+                myAppDatabase.exerciseDao().insertCategories(Arrays.asList(category));
 
                 Toast.makeText(getApplicationContext(),"Category successfully added", Toast.LENGTH_LONG).show();
-                showCategories();
+                showCategoriesAndExercises();
             }
         });
-        showCategories();
+        showCategoriesAndExercises();
     }
 
-    public void showCategories() {
+    public void showCategoriesAndExercises() {
         String categories = "";
+        String exercises = "";
 
         List<Category> categoryList = myAppDatabase.exerciseDao().loadAllCategories();
         for(Category category : categoryList) {
             categories += category.getName() + "\n";
         }
 
-        displayView.setText(categories);
+        List<Exercise> exerciseList = myAppDatabase.exerciseDao().loadAllExercises();
+        for(Exercise exercise : exerciseList) {
+            exercises += exercise.getName() + "\n";
+        }
+
+        categoryTextView.setText(categories);
+        exerciseTextView.setText(exercises);
     }
 }
